@@ -47,8 +47,7 @@ const Header = () => {
             <span className="font-marker text-pencil">
               Tabish <span className="text-marker-red">×</span> Suhairah
             </span>
-            <span>·</span>
-            <span>Iqra University</span>
+
           </div>
         </div>
       </div>
