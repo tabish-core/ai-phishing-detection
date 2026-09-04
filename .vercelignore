@@ -15,7 +15,6 @@ backend/.venv/
 
 # Node
 frontend/node_modules/
-frontend/dist/   # built by buildCommand; copied to project root
 frontend/.vite/
 
 # Editor / OS
