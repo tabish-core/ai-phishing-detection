@@ -1,36 +1,31 @@
 """
 CaughtIn4K — Vercel Python serverless entrypoint.
 
-Vercel's @vercel/python builder looks for files under ``api/`` and bundles
-each one as a serverless function. ``api/index.py`` is treated as a catch-
-all for ``/api/*`` — so we expose a single FastAPI ``app`` that handles
-``/api/health`` and ``/api/analyze``.
-
-Loading strategy: we do NOT rely on ``sys.path`` gymnastics. We use
-``importlib.util`` to load ``backend/main.py`` from its absolute file path.
-This is robust against Vercel's runtime cwd (which may be ``/var/task`` on
-the new uv-based build image) and against any ``__pycache__`` quirks.
-
-If the import fails for any reason we still expose a working ``/api/health``
-endpoint that returns a structured diagnostic JSON so the failure is
-inspectable from the browser.
+Vercel's @vercel/python builder looks for a top-level ``app`` variable in this
+file. We declare it unconditionally so the builder's static analysis can find
+it, then attempt to load the real backend at import time.
 """
 import importlib.util
 import os
 import sys
 import traceback
 
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _PROJECT_ROOT = os.path.dirname(_HERE)
 _BACKEND_DIR = os.path.join(_PROJECT_ROOT, "backend")
 _MAIN_FILE = os.path.join(_BACKEND_DIR, "main.py")
 
+# ---- Unconditional top-level assignment (Vercel requires this) ----
+app = FastAPI(title="CaughtIn4K API (fallback)")
+
 
 def _load_app():
     """
     Load ``backend.main`` from its absolute file path and return its
-    ``app`` attribute. Adds ``_BACKEND_DIR`` to ``sys.path`` so the
-    ``analyzers`` package (a sibling of ``main.py``) is importable.
+    ``app`` attribute.
     """
     if _BACKEND_DIR not in sys.path:
         sys.path.insert(0, _BACKEND_DIR)
@@ -45,8 +40,6 @@ def _load_app():
             f"Could not build import spec for {_MAIN_FILE!r}."
         )
     module = importlib.util.module_from_spec(spec)
-    # Register as ``backend.main`` so relative imports inside it (e.g.
-    # ``from analyzers import ...``) keep working.
     sys.modules.setdefault("backend", importlib.util.module_from_spec(
         importlib.util.spec_from_loader("backend", loader=None)
     ))
@@ -59,10 +52,6 @@ try:
     app = _load_app()
 except Exception as _exc:  # pragma: no cover
     _tb = traceback.format_exc()
-    from fastapi import FastAPI
-    from fastapi.responses import JSONResponse
-
-    app = FastAPI()
 
     @app.get("/api/health")
     def _health():
@@ -93,3 +82,4 @@ except Exception as _exc:  # pragma: no cover
 
 
 __all__ = ["app"]
+
