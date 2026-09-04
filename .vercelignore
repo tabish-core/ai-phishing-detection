@@ -15,7 +15,7 @@ backend/.venv/
 
 # Node
 frontend/node_modules/
-frontend/dist/   # built by buildCommand; do not upload pre-built artifacts
+frontend/dist/   # built by buildCommand; copied to public/ by the build step
 frontend/.vite/
 
 # Editor / OS
