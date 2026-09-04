@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -253,7 +254,7 @@ async def analyze_website(request: AnalyzeRequest):
     # the webpage analyzer's parsed DOM since the external screenshot API
     # does not expose the live page. The local Playwright path ignores
     # ``webpage_features`` and re-derives everything via page.evaluate().
-    webpage_features_for_visual: dict | None = None
+    webpage_features_for_visual: Optional[dict] = None
     if webpage_res.get("available"):
         wf = webpage_res.get("features") or {}
         webpage_features_for_visual = {

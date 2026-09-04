@@ -3,6 +3,7 @@ import base64
 import ipaddress
 import os
 import socket
+from typing import Optional, Tuple
 from urllib.parse import urlparse
 import httpx
 from playwright.async_api import async_playwright
@@ -74,7 +75,7 @@ def _unavailable_envelope(reason: str) -> dict:
     }
 
 
-async def _microlink_resolve(url: str) -> str | None:
+async def _microlink_resolve(url: str) -> Optional[str]:
     """
     Call Microlink to obtain a CDN-hosted screenshot URL for ``url``.
     Returns the screenshot URL on success or ``None`` on any failure
@@ -121,7 +122,7 @@ async def _microlink_resolve(url: str) -> str | None:
     return screenshot.get("url")
 
 
-async def _microlink_download(screenshot_url: str) -> bytes | None:
+async def _microlink_download(screenshot_url: str) -> Optional[bytes]:
     """
     Download the PNG bytes from Microlink's CDN. Cap at
     ``MICROLINK_MAX_BYTES`` and use a short timeout. Returns ``None`` on
@@ -147,7 +148,7 @@ async def _microlink_download(screenshot_url: str) -> bytes | None:
 
 
 async def _capture_via_microlink(
-    url: str, webpage_features: dict | None = None
+    url: str, webpage_features: Optional[dict] = None
 ) -> dict:
     """
     Vercel-friendly visual path: ask Microlink to render the page, then
@@ -331,7 +332,7 @@ def _hostname_is_internal(hostname: str) -> bool:
 def validate_visual_target(raw_url: str):
     """
     Validate URL before browser rendering to prevent SSRF.
-    Returns (is_safe: bool, normalized_url: str | None, reason: str | None).
+    Returns (is_safe: bool, normalized_url: Optional[str], reason: Optional[str]).
     """
     url_to_check = raw_url.strip()
     if not url_to_check.startswith(("http://", "https://")):
@@ -371,7 +372,7 @@ def validate_visual_target(raw_url: str):
     return True, url_to_check, None
 
 
-def validate_post_navigation_url(final_url: str) -> tuple[bool, str | None]:
+def validate_post_navigation_url(final_url: str) -> Tuple[bool, Optional[str]]:
     """
     Re-validate the URL after Playwright has followed redirects. The browser
     may have landed on a host whose DNS differs from the pre-navigation
@@ -442,8 +443,8 @@ async def _capture_and_analyze(url: str) -> dict:
     findings = []
     penalty = 0
     page_title = None
-    screenshot_b64: str | None = None
-    screenshot_mime: str | None = None
+    screenshot_b64: Optional[str] = None
+    screenshot_mime: Optional[str] = None
 
     overall_seconds = OVERALL_TIMEOUT_MS / 1000.0
     try:
@@ -710,7 +711,7 @@ async def _capture_and_analyze(url: str) -> dict:
     }
 
 
-async def analyze_visual(raw_url: str, webpage_features: dict | None = None) -> dict:
+async def analyze_visual(raw_url: str, webpage_features: Optional[dict] = None) -> dict:
     """
     Public entry point: validates the URL against SSRF protections, then
     renders and analyzes the page. Always returns a valid result envelope
