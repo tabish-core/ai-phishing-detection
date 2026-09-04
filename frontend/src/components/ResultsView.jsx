@@ -329,9 +329,7 @@ const ResultsView = ({ data }) => {
             >
               <ImageOff className="w-10 h-10 text-pencil/50 mb-3" strokeWidth={2.5} />
               <p className="font-marker text-3xl text-pencil">Preview unavailable</p>
-              <p className="font-hand text-sm text-pencil/70 mt-2 max-w-md">
-                Live visual capture is not supported on this deployment.
-              </p>
+
               <p className="font-hand text-xs text-pencil/55 mt-1 max-w-md italic">
                 This is a platform limitation, not a verdict that the site
                 is safe — URL, webpage, and NLP analysis still ran.
