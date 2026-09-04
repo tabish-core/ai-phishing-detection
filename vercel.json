@@ -1,7 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd frontend && npm install && npm run build && mkdir -p ../public && cp -r dist/. ../public/",
-  "outputDirectory": "public",
+  "buildCommand": "cd frontend && npm install && npm run build && cp -r dist/. .",
   "framework": null,
   "installCommand": "uv pip install --system -r requirements.txt"
 }
