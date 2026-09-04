@@ -347,7 +347,7 @@ const ResultsView = ({ data }) => {
         <p className="mt-3 font-hand text-sm text-pencil/60 italic border-t-2 border-dashed border-pencil/30 pt-3">
           {screenshotSrc
             ? ''
-            : 'visual capture is disabled on this deployment; the rest of the investigation ran normally.'}
+            : '.'}
         </p>
       </section>
 
