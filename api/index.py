@@ -12,12 +12,16 @@ NLP, Visual) are preserved exactly as they exist in ``backend/main.py``.
 import os
 import sys
 
-# Make ``backend`` importable when this file is executed from the project
-# root by Vercel's Python runtime. We append the absolute path of the
-# ``backend`` package directory and then import the ASGI ``app``.
-_BACKEND_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "backend")
+# Vercel invokes ``api/index.py`` with the project root as the working
+# directory. The ``backend/`` package lives at the project root (a
+# sibling of ``api/``), so we add its absolute path to ``sys.path`` and
+# then import the ASGI ``app`` from ``main.py``.
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_BACKEND_DIR = os.path.join(_PROJECT_ROOT, "backend")
 if _BACKEND_DIR not in sys.path:
     sys.path.insert(0, _BACKEND_DIR)
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
 
 from main import app  # noqa: E402  (sys.path manipulation above)
 
