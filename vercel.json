@@ -3,11 +3,5 @@
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
   "framework": null,
-  "installCommand": "uv pip install --system -r requirements.txt",
-  "functions": {
-    "api/index.py": {
-      "maxDuration": 30,
-      "memory": 1024
-    }
-  }
+  "installCommand": "uv pip install --system -r requirements.txt"
 }

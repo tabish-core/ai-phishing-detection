@@ -1,0 +1,40 @@
+# CaughtIn4K — Vercel upload ignore
+# Keeps these out of the deploy bundle to reduce function size and noise.
+
+# Python bytecode / caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Local venv
+backend/venv/
+backend/.venv/
+.venv/
+
+# Node
+frontend/node_modules/
+frontend/dist/   # built by buildCommand; do not upload pre-built artifacts
+frontend/.vite/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Local env / secrets
+.env
+.env.local
+.env.*.local
+
+# Tool state
+.kilo/
+.vercel/
+
+# Stale test scratch / log dumps
+*_tmp_*
+*.log
+*.tmp
