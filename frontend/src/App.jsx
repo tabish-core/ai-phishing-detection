@@ -41,9 +41,7 @@ function App() {
               <span>·</span>
               <span>2026</span>
             </div>
-            <div className="font-hand text-lg text-pencil/50 italic">
-              investigation only · not a guarantee
-            </div>
+
           </div>
         </div>
       </footer>
