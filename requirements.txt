@@ -1,0 +1,11 @@
+# CaughtIn4K — Vercel Python runtime dependencies
+#
+# Mirrors backend/requirements.txt so the @vercel/python builder installs
+# the same packages the local backend uses. Do not add Chromium-specific
+# dependencies here until the Playwright/Chromium runtime question has
+# been investigated separately.
+fastapi
+uvicorn
+httpx
+beautifulsoup4
+playwright

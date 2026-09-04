@@ -1,0 +1,36 @@
+# CaughtIn4K — repo-wide ignore
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Python (project venv + caches)
+backend/venv/
+backend/.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Node (frontend)
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Vercel local artifacts
+.vercel/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# Tool state
+.kilo/
+
+
+backend.txt
+
