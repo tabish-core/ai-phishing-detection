@@ -4,10 +4,9 @@
   "outputDirectory": "frontend/dist",
   "framework": "vite",
   "installCommand": "uv pip install --system -r requirements.txt",
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/index.py"
+  "functions": {
+    "api/**/*.py": {
+      "includeFiles": "backend/**"
     }
-  ]
+  }
 }
